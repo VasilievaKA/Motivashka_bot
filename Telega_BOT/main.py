@@ -1,9 +1,7 @@
 from telebot import types
 import telebot
-from telegram import message
 import random
-import schedule
-import time
+
 
 TOKEN = '2091780548:AAE8OC8kWSa7U0lE2eVaqErooH1SM08WjOI'
 bot = telebot.TeleBot('2091780548:AAE8OC8kWSa7U0lE2eVaqErooH1SM08WjOI')
@@ -55,6 +53,7 @@ for_foraday = ['Ты со всем справишься! Я в тебя верю
                'Верь в свои силы, ведь ты можешь свернуть горы.']
 
 
+'''Функция для обработки выбора пользователя'''
 @bot.message_handler(content_types=['text'])
 def get_text_messages(massage):
     if massage.text == "/start":
@@ -83,6 +82,8 @@ def get_text_messages(massage):
     else:
         bot.send_message(massage.from_user.id, "Я тебя не понимаю. Напиши /help.")
 
+
+    '''Функция для обработки нажатий на клавиши'''
     @bot.callback_query_handler(func=lambda call: True)
     def callback_worker(call):
         if call.data == "schastie":
