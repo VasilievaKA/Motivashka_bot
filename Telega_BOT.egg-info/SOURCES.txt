@@ -1,9 +1,0 @@
-README.txt
-setup.cfg
-setup.py
-Telega_BOT/main.py
-Telega_BOT.egg-info/PKG-INFO
-Telega_BOT.egg-info/SOURCES.txt
-Telega_BOT.egg-info/dependency_links.txt
-Telega_BOT.egg-info/requires.txt
-Telega_BOT.egg-info/top_level.txt

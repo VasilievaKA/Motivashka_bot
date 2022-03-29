@@ -17,12 +17,12 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'Telega_BOT'
-copyright = '2022, Vasilieva Ksenia, Lozin Vadim, Kartavenco Roman, Maznev Denis'
-author = 'Vasilieva Ksenia, Lozin Vadim, Kartavenco Roman, Maznev Denis'
+project = 'Motivashka_BOT'
+copyright = '2022, Vasilieva Ksenia, LOzin Vadim, Kartavenko Roman, Maznev Denis'
+author = 'Vasilieva Ksenia, LOzin Vadim, Kartavenko Roman, Maznev Denis'
 
 # The full version, including alpha/beta/rc tags
-release = '1.0'
+release = '0.1.0'
 
 
 # -- General configuration ---------------------------------------------------

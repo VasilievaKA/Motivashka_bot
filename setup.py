@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name='Telega_BOT',
     version='0.0.1',
-    packages=['Telega_BOT'],
+    packages=['Новая папка'],
     install_requires=[
         'APScheduler==3.6.3',
         'cachetools==4.2.2',
