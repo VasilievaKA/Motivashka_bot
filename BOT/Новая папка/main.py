@@ -1,11 +1,10 @@
 import telebot
 from telebot import types
-
+import os
 import random
 
-
-TOKEN = '2091780548:AAE8OC8kWSa7U0lE2eVaqErooH1SM08WjOI'
-bot = telebot.TeleBot('2091780548:AAE8OC8kWSa7U0lE2eVaqErooH1SM08WjOI')
+token_m = os.environ.get('TOKEN')
+bot = telebot.TeleBot(token_m)
 for_schastie=['Для счастья надо либо уменьшить желания, либо увеличить средства.',
              'Для счастья нужно что-то делать, что-то любить и во что-то верить.',
              'Единственное счастье в жизни — это постоянное стремление вперед.',
