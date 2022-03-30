@@ -1,10 +1,10 @@
 import telebot
 from telebot import types
-import os
 import random
-
-token_m = os.environ.get('TOKEN')
-bot = telebot.TeleBot(token_m)
+from dotenv import load_dotenv
+import os
+load_dotenv()
+bot = telebot.TeleBot(os.getenv("TOK"))
 for_schastie=['Для счастья надо либо уменьшить желания, либо увеличить средства.',
              'Для счастья нужно что-то делать, что-то любить и во что-то верить.',
              'Единственное счастье в жизни — это постоянное стремление вперед.',
@@ -100,4 +100,4 @@ def get_text_messages(massage):
         bot.send_message(call.message.chat.id, msg)
 
 
-bot.polling(none_stop=True, interval=0)
+bot.polling(none_stop=True, timeout=123)
