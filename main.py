@@ -1,10 +1,13 @@
-import telebot
+from telebot.async_telebot import AsyncTeleBot
 from telebot import types
 import random
 from dotenv import load_dotenv
 import os
+import asyncio
+
+
 load_dotenv()
-bot = telebot.TeleBot(os.getenv("TOK"))
+bot = AsyncTeleBot(os.getenv("TOK"))
 for_schastie=['Для счастья надо либо уменьшить желания, либо увеличить средства.',
              'Для счастья нужно что-то делать, что-то любить и во что-то верить.',
              'Единственное счастье в жизни — это постоянное стремление вперед.',
@@ -54,9 +57,9 @@ for_foraday = ['Ты со всем справишься! Я в тебя верю
 
 
 @bot.message_handler(content_types=['text'])
-def get_text_messages(massage):
+async def get_text_messages(massage):
     if massage.text == "/start":
-        bot.send_message(massage.from_user.id, "Для начала напиши Привет")
+        await bot.send_message(massage.from_user.id, "Для начала напиши Привет")
 
     if massage.text == "Привет":
         keyboard = types.InlineKeyboardMarkup()
@@ -74,30 +77,31 @@ def get_text_messages(massage):
         keyboard.add(key_foraday)
         key_new = types.InlineKeyboardButton(text='Хочу добавить что-то свое', callback_data='new')
         keyboard.add(key_new)
-        bot.send_message(massage.from_user.id, text='Выбери мотивашку на сегодня', reply_markup=keyboard)
+        await bot.send_message(massage.from_user.id, text='Выбери мотивашку на сегодня', reply_markup=keyboard)
 
     elif massage.text == "/help":
-        bot.send_message(massage.from_user.id, "Напиши Привет")
+        await bot.send_message(massage.from_user.id, "Напиши Привет")
     else:
-        bot.send_message(massage.from_user.id, "Я тебя не понимаю. Напиши /help.")
+        await bot.send_message(massage.from_user.id, "Я тебя не понимаю. Напиши /help.")
 
 
-    '''Функция для обработки нажатий на клавиши'''
-    @bot.callback_query_handler(func=lambda call: True)
-    def callback_worker(call):
-        if call.data == "schastie":
-            msg = random.choice(for_schastie)
-        elif call.data == "study":
-            msg = random.choice(for_study)
-        elif call.data == "life":
-            msg = random.choice(for_life)
-        elif call.data == "love":
-            msg = random.choice(for_love)
-        elif call.data == "loveyourself":
-            msg = random.choice(for_loveyourself)
-        elif call.data == "foraday":
-            msg = random.choice(for_foraday)
-        bot.send_message(call.message.chat.id, msg)
+'''Функция для обработки нажатий на клавиши'''
+@bot.callback_query_handler(func=lambda call: True)
+async def callback_worker(call):
+    msg = ''
+    if call.data == "schastie":
+        msg = random.choice(for_schastie)
+    elif call.data == "study":
+        msg = random.choice(for_study)
+    elif call.data == "life":
+        msg = random.choice(for_life)
+    elif call.data == "love":
+        msg = random.choice(for_love)
+    elif call.data == "loveyourself":
+        msg = random.choice(for_loveyourself)
+    elif call.data == "foraday":
+        msg = random.choice(for_foraday)
+    await bot.send_message(call.message.chat.id, msg)
 
 
-bot.polling(none_stop=True, timeout=123)
+asyncio.run(bot.polling())
