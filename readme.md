@@ -12,3 +12,22 @@
 3. Лозин Вадим<br/>
 4. Мазнев Денис
 # Motivashka_bot
+
+
+## Setup
+Clone repo:
+```cmd
+git clone https://github.com/VasilievaKA/Motivashka_bot.git motivashka
+cd motivashka
+```
+Install depends:
+```cmd
+python -m venv venv
+venv\Scripts\activate
+py -m pip install -U pip
+pip install -r requirements.txt
+```
+Run bot:
+```cmd
+py main.py
+```
