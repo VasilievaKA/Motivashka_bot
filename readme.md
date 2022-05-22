@@ -1,7 +1,7 @@
 # МОТИВАШКА 
 ## Бот для поднятия силы духа
 
-![](Screenshot_2.png)
+![](https://github.com/VasilievaKA/Motivashka_bot/blob/main/User_story/Screenshot_2.png)
 
 
 Что может делать?<br/>
