@@ -88,6 +88,10 @@ def get_name_by_id(db: Session, id: int):
     return db.query(Names).filter(Names.id == id).limit(1).all()
 
 
+def get_name_by_name(db: Session, name: str):
+    return db.query(Names).filter(Names.name == name).all()
+
+
 def delete_name_by_id(db: Session, id: int):
     _ = db.query(Names).filter(Names.id == id).delete()
     db.commit()
@@ -131,3 +135,19 @@ async def root(theme_id: int, quote: str):
         else:
             return "Такая цитата уже есть"
 
+
+@app.put("/add name")
+async def root(new_id: int, topic: str):
+    with Session(engine) as db:
+        id = db.query(Names).count()+1
+        res = get_name_by_id(db, new_id)
+        res1 = get_name_by_name(db, topic)
+        if not res and not res1:
+            new_name = NamesCreate(
+                id=new_id,
+                name=topic
+            )
+            create_name(db=db, new_name=new_name)
+            return get_names(db)
+        else:
+            return "Такая тема уже есть"
