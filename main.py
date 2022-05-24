@@ -4,12 +4,9 @@ from dotenv import load_dotenv
 import os
 import asyncio
 import aiomysql
-
-
 load_dotenv()
-
-
 bot = AsyncTeleBot(os.getenv("TOK"))
+
 
 @bot.message_handler(content_types=['text'])
 async def get_text_messages(massage):
@@ -37,8 +34,9 @@ async def get_text_messages(massage):
     else:
         await bot.send_message(massage.from_user.id, "Я тебя не понимаю. Напиши /help.")
 
-
 '''Функция для обработки нажатий на клавиши'''
+
+
 @bot.callback_query_handler(func=lambda call: True)
 async def callback_worker(call):
     conn = await aiomysql.connect(host='127.0.0.1', port=3306,
