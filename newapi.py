@@ -119,7 +119,7 @@ async def root(id: int = None):
             return get_name_by_id(db, id)
 
 
-@app.put("/add quote")
+@app.post("/add quote")
 async def root(theme_id: int, quote: str):
     with Session(engine) as db:
         quote_id = db.query(Quotes).count()+1
@@ -136,7 +136,7 @@ async def root(theme_id: int, quote: str):
             return "Такая цитата уже есть"
 
 
-@app.put("/add name")
+@app.post("/add name")
 async def root(new_id: int, topic: str):
     with Session(engine) as db:
         id = db.query(Names).count()+1
