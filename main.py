@@ -1,6 +1,5 @@
 from telebot.async_telebot import AsyncTeleBot
 from telebot import types
-import random
 from dotenv import load_dotenv
 import os
 import asyncio
