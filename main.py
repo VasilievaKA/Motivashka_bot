@@ -7,13 +7,13 @@ import aiomysql
 load_dotenv()
 bot = AsyncTeleBot(os.getenv("TOK"))
 
-
 @bot.message_handler(content_types=['text'])
 async def get_text_messages(massage):
     if massage.text == "/start":
-        await bot.send_message(massage.from_user.id, "Для начала напиши Привет")
-
-    if massage.text == "Привет":
+        await bot.send_message(massage.from_user.id, "Приветики!\nХочешь получить мотивашку? Тогда напиши мне Мотивашка.")
+    elif massage.text == "/help":
+        await bot.send_message(massage.from_user.id, "Напиши Мотивашка")
+    elif massage.text == "Мотивашка":
         keyboard = types.InlineKeyboardMarkup()
         key_schastie = types.InlineKeyboardButton(text='О счастье ✨', callback_data='schastie')
         keyboard.add(key_schastie)
@@ -28,23 +28,18 @@ async def get_text_messages(massage):
         key_foraday = types.InlineKeyboardButton(text='На каждый день 🏙', callback_data='foraday')
         keyboard.add(key_foraday)
         await bot.send_message(massage.from_user.id, text='Выбери мотивашку на сегодня', reply_markup=keyboard)
-
-    elif massage.text == "/help":
-        await bot.send_message(massage.from_user.id, "Напиши Привет")
     else:
         await bot.send_message(massage.from_user.id, "Я тебя не понимаю. Напиши /help.")
-
-'''Функция для обработки нажатий на клавиши'''
 
 
 @bot.callback_query_handler(func=lambda call: True)
 async def callback_worker(call):
-    conn = await aiomysql.connect(host='127.0.0.1', port=3306,
-                                  user=os.getenv("USER_NAME"), password=os.getenv("USER_PASS"), db='db')
+    conn = await aiomysql.connect(host=f'{os.getenv("HOST")}', port=int(os.getenv("PORT")),
+                                  user=f'{os.getenv("USER_NAME")}', password=os.getenv("USER_PASSWORD"), db='db')
     cur = await conn.cursor()
     msg = ''
     if call.data == "schastie":
-        await cur.execute("SELECT quote FROM quotes WHERE id='5' ORDER BY rand() LIMIT 1")
+        await cur.execute("SELECT * FROM new")
         msg = await cur.fetchall()
     elif call.data == "study":
         await cur.execute("SELECT quote FROM quotes WHERE id='6' ORDER BY rand() LIMIT 1")

@@ -10,7 +10,7 @@ from fastapi import FastAPI
 from sqlalchemy.sql.expression import func
 
 load_dotenv()
-DB_URL = os.getenv("DB_URL")
+DB_URL = os.getenv("DATABASE_URL")
 engine = create_engine(DB_URL, pool_pre_ping=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 DataBase = declarative_base()
@@ -18,15 +18,15 @@ DataBase = declarative_base()
 
 class Quotes(DataBase):
     __tablename__ = "quotes"
-    id_quotes = Column(Integer, primary_key=True, unique=True, nullable=False)
-    id = Column(Integer, nullable=False, primary_key=True)
-    quote = Column(String(), primary_key=True, unique=True, nullable=False)
+    id_quotes = Column(Integer, primary_key=True)
+    id = Column(Integer, ForeignKey('names.id'), nullable=False)
+    quote = Column(String(255), unique=True, nullable=False)
 
 
 class Names(DataBase):
     __tablename__ = "names"
-    id = Column(Integer, ForeignKey('quotes.id'), primary_key=True, unique=True, nullable=False)
-    name = Column(String, nullable=False, unique=True, primary_key=True)
+    id = Column(Integer, primary_key=True)
+    name = Column(String(255), nullable=False, unique=True)
 
 
 class QuoteGet(BaseModel):
@@ -101,6 +101,11 @@ def delete_name_by_id(db: Session, id: int):
 app = FastAPI()
 
 
+@app.on_event("startup")
+async def startup():
+    DataBase.metadata.create_all(bind=engine)
+
+
 @app.get("/get quote")
 async def root(theme_id: int = None):
     with Session(engine) as db:
@@ -139,7 +144,6 @@ async def root(theme_id: int, quote: str):
 @app.post("/add name")
 async def root(new_id: int, topic: str):
     with Session(engine) as db:
-        id = db.query(Names).count()+1
         res = get_name_by_id(db, new_id)
         res1 = get_name_by_name(db, topic)
         if not res and not res1:

@@ -1,0 +1,21 @@
+version: '3.9'
+services:
+  bot:
+    command: bash -c "python main.py"
+    environment:
+      DATABASE_URL: ${DATABASE_URL?Please provide URL for connection to database}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      USER_PASSWORD: ${USER_PASSWORD}
+      USER_NAME: ${USER_NAME}
+      DEBUG: 0
+  fastapi:
+    command:
+      - bash -c "uvicorn newapi:app --reload"
+    environment:
+      DATABASE_URL: ${DATABASE_URL?Please provide URL for connection to database}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      USER_PASSWORD: ${USER_PASSWORD}
+      USER_NAME: ${USER_NAME}
+      DEBUG: 0
+    ports:
+      - 8000:8000

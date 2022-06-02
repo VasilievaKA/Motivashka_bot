@@ -1,0 +1,49 @@
+version: '3.9'
+services:
+  bot:
+    build: .
+    command: bash -c "python main.py"
+    environment:
+      DATABASE_URL: 'mysql+pymysql://root:12345@host.docker.internal:3306/db'
+      HOST: 'host.docker.internal'
+      USER_NAME: 'root'
+      USER_PASSWORD: 12345
+      DEBUG: 1
+    depends_on:
+      - database
+    links:
+      - database
+    restart: on-failure
+  fastapi:
+    build: .
+    command: bash -c "uvicorn newapi:app --host 0.0.0.0 --reload"
+    environment:
+        DATABASE_URL: 'mysql+pymysql://root:12345@host.docker.internal:3306/db'
+        HOST: 127.0.0.1
+        USER_NAME: 'root'
+        USER_PASSWORD: 12345
+        DEBUG: 1
+    depends_on:
+        - database
+    links:
+        - database
+    restart: on-failure
+    ports:
+      - 8000:8000
+  database:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345
+      MYSQL_DATABASE: db
+    volumes:
+      - db:/var/lib/mysql:rw
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+    restart: always
+    environment:
+      ADMINER_DESIGN: 'hydra'
+volumes:
+  db: {}
