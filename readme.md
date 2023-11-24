@@ -30,3 +30,5 @@ Run bot:
 ```cmd
 py main.py
 ```
+
+[check](./Dockerfile)
